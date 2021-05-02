@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -370,6 +371,11 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        if (!writeSettingsLogFile(calendarBasedSaveDir, cameraParameters)) {
+            Inform("Unable to write setting log to \n" + calendarBasedSaveDir);
+            return;
+        }
+
         // Start the video recording
         // (If something goes wrong, we stop recording.)
         sound.play(MediaActionSound.START_VIDEO_RECORDING);
@@ -624,6 +630,35 @@ public class MainActivity extends AppCompatActivity {
         // Creating a unique file path, based on the timestamp in milliseconds.
         String timestamp = Long.toString(System.currentTimeMillis());
         return new File(directory, timestamp + "." + extension);
+    }
+
+    private boolean writeSettingsLogFile(File directory, Camera.Parameters parameters) {
+        long startTime = System.currentTimeMillis();
+        File outputFile = new File(directory, "camera_settings.txt");
+
+        // It is always great to have some additional info
+        // about what settings you used for each recording session.
+        // I log all camera settings I made controllable for this demo.
+
+        try {
+            FileWriter fw = new FileWriter(outputFile);
+
+            fw.write("Preview size: " + parameters.get("preview-size") + "\n");
+            fw.write("Preview fps range: " + parameters.get("preview-fps-range") + "\n");
+            fw.write("Focus mode: " + parameters.getFocusMode() + "\n");
+            fw.write("Zoom: " + parameters.getZoom() + "\n");
+            fw.write("Recording hint: " + parameters.get("\"recording-hint\"") + "\n");
+            fw.write("Video stabilization supported: " + parameters.isVideoStabilizationSupported() + "\n");
+            fw.write("Video stabilization enabled: " + parameters.getVideoStabilization() + "\n");
+            fw.write("Frames format: " + parameters.get("preview-format") + "\n");
+            fw.write("Approximate recording start time (ms): " + startTime + "\n");
+
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public boolean WriteFrame(File directory, byte[] data, String extension) {

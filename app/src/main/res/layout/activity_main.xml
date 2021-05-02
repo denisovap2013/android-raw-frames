@@ -6,13 +6,341 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ViewFlipper
+        android:id="@+id/viewFlipperId"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/menuLayout"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/shutdownBtn"
+                    android:layout_width="125dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:onClick="CloseApp"
+                    android:text="Shutdown"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/captureBtn" />
+
+                <Button
+                    android:id="@+id/captureBtn"
+                    android:layout_width="125dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:onClick="StartRecordingFrames"
+                    android:text="Capture"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/settingsBtn" />
+
+                <Button
+                    android:id="@+id/turnOnBtn"
+                    android:layout_width="125dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:onClick="StartPreview"
+                    android:text="Turn on"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/settingsBtn"
+                    android:layout_width="125dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:onClick="OpenSettings"
+                    android:text="Settings"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/turnOnBtn" />
+
+                <ProgressBar
+                    android:id="@+id/recordingProgressBarId"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="125dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:max="150"
+                    android:progress="50"
+                    app:layout_constraintStart_toStartOf="@+id/captureBtn"
+                    app:layout_constraintTop_toBottomOf="@+id/captureBtn" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/videoLayout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="200dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <SurfaceView
+                    android:id="@+id/videoView"
+                    android:layout_width="421dp"
+                    android:layout_height="282dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="UpdateFocus"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginEnd="10dp"
+                android:baselineAligned="false"
+                android:clipChildren="true"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:clipChildren="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView9"
+                            android:layout_width="match_parent"
+                            android:layout_height="33dp"
+                            android:text="Parameters of the camera"
+                            android:textAllCaps="true" />
+
+                        <TextView
+                            android:id="@+id/textView10"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="10dp"
+                            android:text="Preview size" />
+
+                        <Spinner
+                            android:id="@+id/previewSizeSelectorId"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:spinnerMode="dialog" />
+
+                        <TextView
+                            android:id="@+id/textView12"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="10dp"
+                            android:text="Preview FPS range" />
+
+                        <Spinner
+                            android:id="@+id/fpsRangeSelectorId"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:spinnerMode="dialog" />
+
+                        <TextView
+                            android:id="@+id/textView16"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="10dp"
+                            android:text="Focus mode" />
+
+                        <Spinner
+                            android:id="@+id/focusModeSelectorId"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:spinnerMode="dialog" />
+
+                        <TextView
+                            android:id="@+id/textView17"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="10dp"
+                            android:text="Zoom" />
+
+                        <SeekBar
+                            android:id="@+id/zoomControllerId"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:max="0"
+                            android:progress="0" />
+
+                        <TextView
+                            android:id="@+id/zoomIndicatorId"
+                            android:layout_width="match_parent"
+                            android:layout_height="34dp"
+                            android:text="1"
+                            android:textAlignment="center" />
+
+                        <Switch
+                            android:id="@+id/recordHintSwitchId"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:text="Recording hint" />
+
+                        <Switch
+                            android:id="@+id/videoStabilizationSwitchId"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:text="Video stabilization" />
+
+                        <TextView
+                            android:id="@+id/textView15"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="10dp"
+                            android:text="Preview format" />
+
+                        <Spinner
+                            android:id="@+id/formatSelectorId"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:spinnerMode="dialog" />
+
+                    </LinearLayout>
+                </ScrollView>
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:scrollbarStyle="insideOverlay">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView"
+                            android:layout_width="match_parent"
+                            android:layout_height="33dp"
+                            android:text="Parameters of recording"
+                            android:textAllCaps="true" />
+
+                        <TextView
+                            android:id="@+id/textView3"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:text="Number of frames to save" />
+
+                        <SeekBar
+                            android:id="@+id/framesNumberControlId"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:max="0"
+                            android:progress="0" />
+
+                        <TextView
+                            android:id="@+id/framesNumberIndicatorId"
+                            android:layout_width="match_parent"
+                            android:layout_height="34dp"
+                            android:text="1"
+                            android:textAlignment="center" />
+
+                        <TextView
+                            android:id="@+id/textView5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Target folder:" />
+
+                        <TextView
+                            android:id="@+id/targetFolderFieldId"
+                            android:layout_width="match_parent"
+                            android:layout_height="51dp"
+                            android:text="(there should be a path to the target folder)" />
+
+                        <TextView
+                            android:id="@+id/textView7"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Use adb pull /path/to/data in order to copy the data from the device to your computer."
+                            android:textStyle="italic" />
+
+                        <TextView
+                            android:id="@+id/textView8"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="(You will need to download the Android SDK platform tools on you computer)"
+                            android:textStyle="italic" />
+                    </LinearLayout>
+                </ScrollView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="#303030"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/settingsApplyBtnId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="6dp"
+                    android:onClick="ApplySettings"
+                    android:text="Apply" />
+
+                <Button
+                    android:id="@+id/button4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="6dp"
+                    android:onClick="CancelSettings"
+                    android:text="Cancel" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="Some changes require restarting the camera preview." />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ViewFlipper>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

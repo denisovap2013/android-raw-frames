@@ -97,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
         framesSaveDir = new File(getFilesDir(), "raw-frames");
         storageAvailable = maybeCreateDir(framesSaveDir);
 
+        if (!storageAvailable)
+            Inform("Storage is not available. Try to restart the app and add corresponding permissions.");
+
         // Bind with GUI elements
         initializeInterface();
 
@@ -178,9 +181,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         framesNumberControl.setProgress(framesNumber - 1);
-
-        // Set the storage dir info
-        ((TextView)findViewById(R.id.targetFolderFieldId)).setText(framesSaveDir.toString());
     }
 
     // Permissions
@@ -351,7 +351,7 @@ public class MainActivity extends AppCompatActivity {
         if (recording) return;  // We do not start another recording session, while there is already active one.
 
         if (!storageAvailable) {
-            Inform("Unable to start recording. Storage is not available: \n" + framesSaveDir);
+            Inform("Unable to start recording. Storage is not available. Try restarting the app and granting corresponding permissions.");
             return;
         }
 

@@ -186,19 +186,25 @@ public class MainActivity extends AppCompatActivity {
 
     // Permissions
 
-    private boolean isPermissionGranted(String permissionName) {
-        return checkSelfPermission(permissionName) == PackageManager.PERMISSION_GRANTED;
-    }
+    private boolean arePermissionsGranted(String[] permissionsNames) {
+        for (String permission: permissionsNames)
+            if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED)
+                return false;
 
-    private boolean requestSinglePermission(String permissionName) {
-        if (isPermissionGranted(permissionName)) return true;
-        requestPermissions(new String[]{permissionName}, 1);
-        return isPermissionGranted(permissionName);
+        return true;
     }
 
     private boolean CheckAndRequestPermissions() {
-        return (requestSinglePermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                && requestSinglePermission(Manifest.permission.CAMERA));
+        String[] permissions = new String[] {
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+        };
+        if (arePermissionsGranted(permissions)) return true;
+
+        requestPermissions(permissions, 1);
+
+        return arePermissionsGranted(permissions);
     }
 
     // Camera related methods
@@ -245,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
         mCamera = getCameraInstance();
 
         if (mCamera == null) {
-            Inform("Unable to restore the Camera");
+            Inform("Unable to restore the Camera.");
             return;
         }
 
